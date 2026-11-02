@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from app.document_processor import extract_text
 
@@ -11,6 +12,7 @@ def health_check():
 
 @app.post("/documents/upload")
 async def upload_document(file: UploadFile = File(...)):
+
     if not file.filename:
         raise HTTPException(
             status_code=400,
@@ -33,11 +35,13 @@ async def upload_document(file: UploadFile = File(...)):
 
     try:
         text = extract_text(file.filename, content)
+
     except UnicodeDecodeError:
         raise HTTPException(
             status_code=400,
             detail="The TXT file must use UTF-8 encoding"
         )
+
     except Exception as exc:
         raise HTTPException(
             status_code=400,
